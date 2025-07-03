@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splash Cursor Effect</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at 20% 50%, #120078 0%, #000000 25%), 
+                        radial-gradient(circle at 80% 20%, #ff006e 0%, #000000 25%), 
+                        radial-gradient(circle at 40% 80%, #8338ec 0%, #000000 25%), 
+                        radial-gradient(circle at 60% 30%, #3a86ff 0%, #000000 25%);
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            cursor: none;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            color: white;
+        }
+
+        .content {
+            z-index: 10;
+            position: relative;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .splash {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            mix-blend-mode: screen;
+        }
+
+        .splash-1 {
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, 
+                rgba(58, 134, 255, 0.9) 0%, 
+                rgba(131, 56, 236, 0.7) 30%, 
+                rgba(255, 0, 110, 0.5) 60%, 
+                transparent 80%);
+            filter: blur(1px);
+            animation: splash1 0.8s ease-out forwards;
+        }
+
+        .splash-2 {
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, 
+                rgba(255, 0, 110, 0.8) 0%, 
+                rgba(131, 56, 236, 0.6) 25%, 
+                rgba(18, 0, 120, 0.4) 50%, 
+                transparent 75%);
+            filter: blur(2px);
+            animation: splash2 1s ease-out forwards;
+        }
+
+        .splash-3 {
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle, 
+                rgba(131, 56, 236, 0.7) 0%, 
+                rgba(58, 134, 255, 0.5) 20%, 
+                rgba(255, 0, 110, 0.3) 40%, 
+                rgba(18, 0, 120, 0.2) 60%, 
+                transparent 80%);
+            filter: blur(3px);
+            animation: splash3 1.2s ease-out forwards;
+        }
+
+        @keyframes splash1 {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(4) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes splash2 {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            40% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: scale(3.5) rotate(-180deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes splash3 {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            30% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(3) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .cursor {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, 
+                rgba(255, 255, 255, 1) 0%, 
+                rgba(58, 134, 255, 0.8) 50%, 
+                transparent 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: screen;
+            transition: transform 0.1s ease;
+            box-shadow: 0 0 20px rgba(58, 134, 255, 0.5);
+        }
+
+        .cursor.clicking {
+            transform: scale(1.5);
+        }
+
+        .demo-area {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .demo-btn {
+            padding: 12px 24px;
+            border: 2px solid rgba(58, 134, 255, 0.4);
+            background: rgba(18, 0, 120, 0.3);
+            color: white;
+            border-radius: 25px;
+            cursor: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(58, 134, 255, 0.2);
+        }
+
+        .demo-btn:hover {
+            background: rgba(58, 134, 255, 0.2);
+            border-color: rgba(255, 0, 110, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 0, 110, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div>
+    
+    <div class="container">
+        <div class="content">
+            <h1 class="title">Splash Cursor Effect</h1>
+            <p class="subtitle">Move your cursor around to see the magical ripples</p>
+            
+            <div class="demo-buttons">
+                <button class="demo-btn">Hover Me</button>
+                <button class="demo-btn">Click Me</button>
+                <button class="demo-btn">Try Me</button>
+            </div>
+            <a href="https://www.github.com/iamitpkumar" target="_blank" style="display: block; padding:20px; color:#fff; text-decoration: none;">Github: @iamitpkumar</a>
+        </div>
+    </div>
+
+    <div class="demo-area">
+        <p>✨ Move your mouse around the screen</p>
+        <p>🎯 Click anywhere to create bigger splashes</p>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            let mouseX = 0, mouseY = 0;
+            let cursorX = 0, cursorY = 0;
+            
+            // Custom cursor following
+            function animateCursor() {
+                cursorX += (mouseX - cursorX) * 0.1;
+                cursorY += (mouseY - cursorY) * 0.1;
+                
+                $('.cursor').css({
+                    'left': cursorX + 'px',
+                    'top': cursorY + 'px'
+                });
+                
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+
+            // Track mouse movement
+            $(document).mousemove(function(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                // Create splash effect on mouse move (throttled)
+                if (Math.random() > 0.7) {
+                    createSplash(e.clientX, e.clientY);
+                }
+            });
+
+            // Create splash on click
+            $(document).mousedown(function(e) {
+                $('.cursor').addClass('clicking');
+                
+                // Create multiple splashes on click
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        createSplash(
+                            e.clientX + (Math.random() - 0.5) * 50,
+                            e.clientY + (Math.random() - 0.5) * 50
+                        );
+                    }, i * 100);
+                }
+            });
+
+            $(document).mouseup(function() {
+                $('.cursor').removeClass('clicking');
+            });
+
+            // Create splash effect
+            function createSplash(x, y) {
+                const splashTypes = ['splash-1', 'splash-2', 'splash-3'];
+                const randomType = splashTypes[Math.floor(Math.random() * splashTypes.length)];
+                
+                const splash = $('<div></div>')
+                    .addClass('splash')
+                    .addClass(randomType)
+                    .css({
+                        'left': x + 'px',
+                        'top': y + 'px',
+                        'margin-left': randomType === 'splash-1' ? '-15px' : 
+                                      randomType === 'splash-2' ? '-25px' : '-35px',
+                        'margin-top': randomType === 'splash-1' ? '-15px' : 
+                                     randomType === 'splash-2' ? '-25px' : '-35px'
+                    });
+                
+                $('body').append(splash);
+                
+                // Remove splash after animation
+                setTimeout(() => {
+                    splash.remove();
+                }, randomType === 'splash-1' ? 800 : 
+                   randomType === 'splash-2' ? 1000 : 1200);
+            }
+
+            // Button interactions
+            $('.demo-btn').on('mouseenter', function() {
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        const rect = this.getBoundingClientRect();
+                        createSplash(
+                            rect.left + rect.width/2 + (Math.random() - 0.5) * 100,
+                            rect.top + rect.height/2 + (Math.random() - 0.5) * 100
+                        );
+                    }, i * 50);
+                }
+            });
+
+            $('.demo-btn').on('click', function() {
+                const rect = this.getBoundingClientRect();
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => {
+                        createSplash(
+                            rect.left + rect.width/2 + (Math.random() - 0.5) * 150,
+                            rect.top + rect.height/2 + (Math.random() - 0.5) * 150
+                        );
+                    }, i * 75);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
